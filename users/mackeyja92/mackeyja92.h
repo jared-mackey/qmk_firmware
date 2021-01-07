@@ -10,7 +10,6 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
-  KC_TMUX_SCROLL,
 };
 
 
@@ -24,5 +23,6 @@ enum custom_keycodes {
 #define KC_LSPC LT(_LOWER, KC_SPC)
 #define KC_RBSPC LT(_RAISE, KC_BSPC)
 
-bool handle_record_user(uint16_t keycode, keyrecord_t *record);
+void dance_tmux_scroll_mac_lock(qk_tap_dance_state_t *state, void *user_data);
+bool process_record_user(uint16_t keycode, keyrecord_t *record);
 void tmux_prefix(void);

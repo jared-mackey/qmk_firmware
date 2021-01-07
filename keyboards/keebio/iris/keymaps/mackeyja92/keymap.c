@@ -10,7 +10,7 @@ enum {
 
 qk_tap_dance_action_t tap_dance_actions[] = {
   // Tap once to enter tmux, tap twice to lock the mac
-  [TDLOCK] = ACTION_TAP_DANCE_DOUBLE(KC_TMUX_SCROLL, LGUI(LCTL(KC_Q)))
+  [TDLOCK] = ACTION_TAP_DANCE_FN(dance_tmux_scroll_mac_lock)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -71,9 +71,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
   rgblight_increase_hue();
-  return handle_record_user(keycode, record);
+  return process_record_user(keycode, record);
 }
 
 void encoder_update_user(uint8_t index, bool clockwise) {
@@ -113,4 +113,3 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     tap_code(KC_PGUP);
   }
 }
-

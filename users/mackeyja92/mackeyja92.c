@@ -7,15 +7,29 @@ void tmux_prefix(void) {
   unregister_code(KC_LCTL);
 }
 
-bool handle_record_user(uint16_t keycode, keyrecord_t *record) {
+void dance_tmux_scroll_mac_lock(qk_tap_dance_state_t *state, void *user_data) {
+  // tap dances between sending the tmux scroll command and locking the mac
+  // Single tap goes into tmux scroll
+  // Double tap or more locks the mac
+  if (state->count == 1) {
+    // Only pressed once, send TMUX scroll command
+    tmux_prefix();
+    tap_code(KC_LBRC);
+  } else {
+    // Double tapped, send lock command
+    // Send the default key binding to lock a Mac laptop
+    register_code(KC_LGUI);
+    register_code(KC_LCTRL);
+    tap_code(KC_Q);
+    unregister_code(KC_LCTRL);
+    unregister_code(KC_LGUI);
+  }
+  // Reset tap dance state back to original since we don't store any long term state or hold keys for any duration
+  reset_tap_dance(state);
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_TMUX_SCROLL:
-      SEND_STRING("TEST");
-      clear_keyboard();
-      // Send TMUX escape and then `[` to go into scroll mode
-      tmux_prefix();
-      tap_code(KC_LBRC);
-      return true;
     case LOWER:
       if (record->event.pressed) {
         layer_on(_LOWER);
